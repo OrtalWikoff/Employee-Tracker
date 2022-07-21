@@ -28,7 +28,7 @@
   "homepage": "https://github.com/OrtalWikoff/Employee-Tracker#readme",
   "dependencies": {
     "inquirer": "^8.2.4",
-    "mysql": "^2.18.1",
+    "mysql2": "^2.3.3",
     "node": "^18.5.0"
   }
 }
