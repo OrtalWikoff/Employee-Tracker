@@ -10,17 +10,16 @@ const SQLquery = require ("./lib/sql_queries");
 const inquirerTypes = [
     'input', 'confirm', 'list'
 ]
+// calling the main manu function to start the app
+menu();
 
-mainMenu();
-
-function mainMenu() {
-    const menuPrompt = new InquirerFunctions(inquirerTypes[2], 'menuChoice', questions.mainMenuPrompt, commandMenuChoices);
+function menu() {
+    const menuPrompt = new InquirerFunctions(inquirerTypes[2], 'menuChoice', questions.menuPrompt, commandMenuChoices);
     
     inquirer.prompt([menuPrompt.ask()]).then(operation => {
 
             const query1 = "SELECT role.title FROM role"
             const compRolesArrayQuery = new SQLquery(query1);
-
             const depNameQuery = "SELECT department.name FROM department";
             const depNamesArrayQuery = new SQLquery(depNameQuery);
 
@@ -64,7 +63,7 @@ function viewAllEmp() {
                      INNER JOIN department on department.id = role.department_id;`
 
     const empTable = new SQLquery(query);
-    empTable.generalTableQuery(mainMenu);
+    empTable.generalTableQuery(menu);
 }
 
 function addEmp(emp_info, managerObjArr) {
@@ -97,7 +96,7 @@ function addEmp(emp_info, managerObjArr) {
                 throw err
             }
             console.log("Employee Added");
-            mainMenu();
+            menu();
         })
     })
 }
@@ -108,7 +107,7 @@ function viewAllRoles() {
                     INNER JOIN department ON department.id = role.department_id`
     const roleTable = new SQLquery(query);
 
-    roleTable.generalTableQuery(mainMenu);
+    roleTable.generalTableQuery(menu);
 }
 
 function viewAllDep() {
@@ -118,7 +117,7 @@ function viewAllDep() {
 
     const depTable = new SQLquery(query);
 
-    depTable.generalTableQuery(mainMenu);
+    depTable.generalTableQuery(menu);
 }
 
 function addRole() {
@@ -151,7 +150,7 @@ function addRole() {
                                     VALUES ( (?), (?), (?));`
                     const addRole = new SQLquery(addRolequery, [userChoices.role_to_add, userChoices.role_salary, res[0].id]);
 
-                    addRole.update(mainMenu, "Role added!");
+                    addRole.update(menu, "Role added!");
                 })
             })
         })
@@ -171,12 +170,12 @@ function addDep(depNameArr) {
 
         if (alreadyExist.length >= 1) {
             console.log("Department Already exists!")
-            mainMenu();
+            menu();
         } else {
             const addDepQuery = `INSERT INTO department (department.name) VALUES (?);`
             const addDep = new SQLquery(addDepQuery, userChoice.dep_to_add);
 
-            addDep.update(mainMenu, "Department added!");
+            addDep.update(menu, "Department added!");
         }
     })
 }
@@ -229,8 +228,6 @@ function EmpInfoPrompts(compRoles, actionChoice) {
                     //Executed the multiples check function delivering 
                     if (actionChoice == "UPDATE EMP ROLE") {
                         EmpMultiplesCheck(emp_info, actionChoice, compRoles);
-                    } else if (actionChoice == "UPDATE EMP MANAGER") {
-                        EmpMultiplesCheck(emp_info, actionChoice, managerObjArr, managerNamesArr);
                     } else {
                         EmpMultiplesCheck(emp_info, actionChoice);
                     }
