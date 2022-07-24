@@ -7,6 +7,7 @@ const questions = require ("./lib/questions");
 const InquirerFunctions = require ("./lib/inquirer");
 const SQLquery = require ("./lib/sql_queries");
 
+// Prompt types
 const inquirerTypes = [
     'input', 'confirm', 'list'
 ]
@@ -23,6 +24,7 @@ function menu() {
             const depNameQuery = "SELECT department.name FROM department";
             const depNamesArrayQuery = new SQLquery(depNameQuery);
 
+// diffrent casses base on the selection from the main menu
             switch (operation.menuChoice) {
 
                 case commandMenuChoices[2]:
@@ -55,7 +57,7 @@ function menu() {
             }
         })
 }
-
+// function to view all the employees
 function viewAllEmp() {
     const query = `SELECT employee.id, employee.first_name, employee.last_name, role.title, role.salary, department.name
                      FROM employee
@@ -66,6 +68,7 @@ function viewAllEmp() {
     empTable.generalTableQuery(menu);
 }
 
+//funtion to add an employee
 function addEmp(emp_info, managerObjArr) {
 
     console.log("You've entered employee ADD");
@@ -100,7 +103,7 @@ function addEmp(emp_info, managerObjArr) {
         })
     })
 }
-
+// function to view all the roles
 function viewAllRoles() {
     const query = `SELECT role.title, role.salary, department.name
                     FROM role
@@ -109,7 +112,7 @@ function viewAllRoles() {
 
     roleTable.generalTableQuery(menu);
 }
-
+// function to view all the departments
 function viewAllDep() {
 
     const query = `SELECT department.name
@@ -120,6 +123,7 @@ function viewAllDep() {
     depTable.generalTableQuery(menu);
 }
 
+// function to add a role
 function addRole() {
 
     const queryDeps = "SELECT department.name FROM department;"
@@ -156,6 +160,7 @@ function addRole() {
         })
     })
 }
+ // function to add a department 
 
 function addDep(depNameArr) {
 
@@ -179,7 +184,7 @@ function addDep(depNameArr) {
         }
     })
 }
-
+// function to get employy info 
 function EmpInfoPrompts(compRoles, actionChoice) {
 
     const query = "SELECT id, first_name, last_name FROM employee WHERE employee.id IN ( SELECT employee.manager_id FROM employee )";
